@@ -18,7 +18,11 @@ def edit():
 
 @app.route('/admin/')
 def admin():
-    return render_template("admin.html")
+    hund_list = []
+    db.cursor.execute("select namn, fyear from hund")
+    for hund in db.cursor:
+        hund_list.append(hund)
+    return render_template("admin.html", hund_list = hund_list)
 
 @app.route('/remove/', methods=['POST'])
 def remove():
