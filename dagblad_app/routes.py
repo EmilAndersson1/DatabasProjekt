@@ -5,27 +5,37 @@ from dagblad_app.databas import db
 
 @app.route('/')
 def index():
-    hund_list = []
-    db.cursor.execute("select namn, fyear from hund")
-    for hund in db.cursor:
-        hund_list.append(hund)
-    return render_template("index.html", hund_list = hund_list)
+    return render_template("index.html")
 
 
-@app.route('/edit/')
-def edit():
+@app.route('/new/')
+def new():
     return render_template("new.html")
 
 @app.route('/admin/')
 def admin():
-    hund_list = []
-    db.cursor.execute("select namn, fyear from hund")
-    for hund in db.cursor:
-        hund_list.append(hund)
-    return render_template("admin.html", hund_list = hund_list)
+    image_list = []
+    db.cursor.execute("select image_url, alt_text from images")
+    for image in db.cursor:
+        image_list.append(image)
+    return render_template("admin.html", image_list = image_list)
 
 @app.route('/remove/', methods=['POST'])
 def remove():
     name = request.form["article_being_removed"]
     db.cursor.execute("delete from hund where namn='{}'".format(name))
     return redirect("/")
+
+@app.route('/new_author/')
+def new_author():
+    return render_template("new_author.html")
+
+@app.route('/add_author/', methods=['POST'])
+def add_author():
+    author_name = request.form["author_name"]
+    person_nr = request.form["person_nr"]
+    notes = request.form["notes"]
+    sql = """INSERT INTO author VALUES (%s, %s, %s)"""
+    db.cursor.execute(sql, (person_nr, author_name, notes))
+    db.conn.commit()
+    return redirect(url_for("admin"))
