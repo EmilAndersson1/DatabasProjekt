@@ -11,17 +11,29 @@
     <div class="container">
     <h1 class="mt-2">Mortförs Dagblad</h1>
     
-        <form action="/update/" method="POST">
+        <form action="/add_article/" method="POST">
             <div class="form-row mt-4">
                 <div class="col-md-4 mb-3">
-                    <label for="name">Författare:</label> 
-                    <input type="text" class="form-control" id="name" name="author" placeholder="Författare..." required> 
+                    <label for="name">Författare:</label>
+                    <!-- skapar lista för val av författare -->
+                    <select class="form-control" id="name" name="author_personnummer">
+                        {%for author in author_list%}
+                        <option value="{{author[1]}}">{{author[0]}}</option>
+                        {%endfor%}
+                    </select> 
+                    
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="title">Rubrik på artikel:</label>
                     <input type="text" class="form-control" id="title" name="headline" placeholder="Titel..." required>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="col-md-8 mb-3">    
+                    <label for="article_preamble">Artikelns inledning här:</label>
+                    <textarea type="text" class="form-control" id="article_preamble" rows="4" name="article_preamble" placeholder="Artikelns inledning här..." required></textarea>
+                </div>
+            </div> 
             <div class="form-row">
                 <div class="col-md-8 mb-3">    
                     <label for="article_text">Artikelns text här:</label>

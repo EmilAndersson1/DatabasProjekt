@@ -3,55 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
     <title>Admin - Mortförs Dagblad</title>
 </head>
 <body>
     <div class="container">
         <h1 class="mt-2">AdminMortförs Dagblad</h1>
 
-        {%for image in image_list%}
-            <img src="{{image[0]}}" alt="{{image[1]}}" class="article_image">
-        {%endfor%}
-
         <a href="{{url_for('new_author')}}" class="btn btn-success btn-lg btn-block mt-5">Lägg till författare</a>
         
-        <a href="{{url_for('new')}}" class="btn btn-success btn-lg btn-block mt-3">Skapa ny artikel</a>
+        <a href="{{url_for('new_article')}}" class="btn btn-success btn-lg btn-block mt-3">Skapa ny artikel</a>
 
         <table class="table table-hover mt-4">
             <thead class="thead-dark">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Född</th>
+                <tr>
                 <th scope="col">Namn</th>
-                <th scope="col">Ras</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Remove</th>
-              </tr>
+                <th scope="col">Personnumer</th>
+                <th scope="col">Anteckningar</th>
+                <th scope="col">Ta bort författare</th>
+                
+                </tr>
             </thead>
             <tbody>
-                {%for hund in hund_list%}
+                {%for author in author_list%}
                     <tr>
-                        <th scope="row">TBD</th>
-                        <td>{{hund[1]}}</td>
-                        <td>{{hund[0]}}</td>
-                        <td>TBD</td>
+                        <th scope="row">{{author[0]}}</th>
+                        <td>{{author[1]}}</td>
+                        <td>{{author[2]}}</td>
+                        
                         <td>
-                            <form action="/remove_article/" method="POST">
-                                <!--<input type="text" name="article_being_removed" class="hidden">-->
-                                <input type="submit" class="btn btn-sm btn-success" value="Redigera">
-                            </form>
-                        </td>
-                        <td>
-                            <form action="/remove_article/" method="POST">
-                                <!--<input type="text" name="article_being_removed" class="hidden">-->
+                            <form action="/remove_author/" method="POST">
+                                <input type="text" name="author_being_removed" class="hidden" value="{{author[1]}}">
                                 <input type="submit" class="btn btn-sm btn-danger" value="Ta bort">
                             </form>
                         </td>
                     </tr>
                 {%endfor%}
             </tbody>
-          </table>
+        </table>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
