@@ -35,7 +35,9 @@ def add_author():
     author_name = request.form["author_name"]
     person_nr = request.form["person_nr"]
     notes = request.form["notes"]
-    sql = """INSERT INTO author VALUES (%s, %s, %s)"""
+
+    sql = "NSERT INTO author VALUES (%s, %s, %s)"
     db.cursor.execute(sql, (person_nr, author_name, notes))
     db.conn.commit()
+    
     return redirect(url_for("admin"))
