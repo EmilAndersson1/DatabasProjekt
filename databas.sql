@@ -3,6 +3,7 @@ create table article(
     headline varchar(255), 
     preamble text, 
     article_text text, 
+    published varchar(255),
     PRIMARY KEY(article_ID)
 );
 

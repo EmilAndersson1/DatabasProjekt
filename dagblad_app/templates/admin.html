@@ -23,8 +23,8 @@
                 <th scope="col">Personnumer</th>
                 <th scope="col">Anteckningar</th>
                 <th scope="col">Ta bort författare</th>
-                
                 </tr>
+                
             </thead>
             <tbody>
                 {%for author in author_list%}
@@ -43,11 +43,49 @@
                 {%endfor%}
             </tbody>
         </table>
+
+        <table class="table table-hover mt-4">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Article ID</th>
+                <th scope="col">Rubrik</th>
+                <th scope="col">Ingress</th>
+                <th scope="col">Publicerad</th>
+                <th scope="col">Författare</th>
+                <th scope="col">Ta bort artikel</th>
+                <th scope="col">Redigera artikel</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                {%for article in article_list%}
+                    
+                        <tr>
+                            <th scope="row">{{article[0]}}</th>
+                            <td>{{article[1]}}</td>
+                            <td>{{article[2]}}</td>
+                            <td>{{article[3]}}</td>
+                            <td>{{article[4]}}</td>
+                            <td>
+                                <form action="/remove_article/" method="POST">
+                                    <input type="text" name="article_being_removed" class="hidden" value="{{article[0]}}">
+                                    <input type="submit" class="btn btn-sm btn-danger" value="Ta bort">
+                                </form>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-success">Redigera</a>
+                            </td>
+                        </tr>
+                    
+                {%endfor%}
+            </tbody>
+        </table>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
