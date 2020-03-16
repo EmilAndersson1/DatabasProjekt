@@ -32,7 +32,7 @@ def add_article():
     article_text = request.form["article_text"]
     time_published = now.strftime("%Y-%m-%d %H:%M")
 
-    sql = "INSERT INTO article VALUES (DEFAULT,%s, %s, %s, %s)"
+    sql = "INSERT INTO article VALUES (DEFAULT, %s, %s, %s, %s)"
     db.cursor.execute(sql, (headline, preamble, article_text, time_published))
     
     for author in author_personnummer:
