@@ -15,7 +15,7 @@ create table author(
 );
 
 create table article_author(
-    article_ID serial REFERENCES article(article_ID), 
+    article_ID integer REFERENCES article(article_ID), 
     person_nr integer REFERENCES author(person_nr), 
     CONSTRAINT article_author_ID PRIMARY KEY(article_ID, person_nr)
 );

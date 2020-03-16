@@ -51,7 +51,6 @@
                 <th scope="col">Rubrik</th>
                 <th scope="col">Ingress</th>
                 <th scope="col">Publicerad</th>
-                <th scope="col">Författare</th>
                 <th scope="col">Ta bort artikel</th>
                 <th scope="col">Redigera artikel</th>
                 
@@ -65,7 +64,6 @@
                             <td>{{article[1]}}</td>
                             <td>{{article[2]}}</td>
                             <td>{{article[3]}}</td>
-                            <td>{{article[4]}}</td>
                             <td>
                                 <form action="/remove_article/" method="POST">
                                     <input type="text" name="article_being_removed" class="hidden" value="{{article[0]}}">

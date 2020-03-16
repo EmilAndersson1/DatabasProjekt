@@ -15,13 +15,13 @@
         <form action="/add_article/" method="POST">
             <div class="form-row mt-4">
                 <div class="col-md-4 mb-3">
-                    <label for="name">Författare:</label>
+                    <p>Författare:</p>
                     <!-- skapar lista för val av författare -->
-                    <select class="form-control" id="name" name="author_personnummer">
-                        {%for author in author_list%}
-                        <option value="{{author[1]}}">{{author[0]}}</option>
-                        {%endfor%}
-                    </select> 
+                    {%for author in author_list%}
+                    <label class="form-check-label">{{author[0]}}</label>
+                    <input type="checkbox" value="{{author[1]}}" name="author_personnummer" id="name">
+                    <br>
+                    {%endfor%}
                     
                 </div>
                 <div class="col-md-4 mb-3">

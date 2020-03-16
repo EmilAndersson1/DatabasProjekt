@@ -25,8 +25,8 @@ def new_article():
 @app.route('/add_article/', methods=['POST'])
 def add_article():
     now = datetime.now()
-
-    author_personnummer = request.form["author_personnummer"]
+    author_personnummer = []
+    author_personnummer = request.form.getlist("author_personnummer")
     headline = request.form["headline"]
     preamble = request.form["article_preamble"]
     article_text = request.form["article_text"]
@@ -35,8 +35,9 @@ def add_article():
     sql = "INSERT INTO article VALUES (DEFAULT,%s, %s, %s, %s)"
     db.cursor.execute(sql, (headline, preamble, article_text, time_published))
     
-    sql = "INSERT INTO article_author VALUES (DEFAULT, %s)" 
-    db.cursor.execute(sql, (author_personnummer,))
+    for author in author_personnummer:
+        sql = "INSERT INTO article_author(article_id, person_nr) select article_id, %s from article where preamble = %s and headline = %s and published = %s and article_text = %s"
+        db.cursor.execute(sql,(author, preamble, headline, time_published, article_text))
 
     db.conn.commit()
 
@@ -64,12 +65,7 @@ def admin():
         author_list.append(author)
 
     article_list = []
-    db.cursor.execute("select article.article_ID, article.headline, article.preamble, article.published, author.author_name \
-                        from article \
-                        inner join article_author \
-                            ON article.article_id=article_author.article_id \
-                        inner join author \
-                            ON author.person_nr=article_author.person_nr")
+    db.cursor.execute("select article.article_ID, article.headline, article.preamble, article.published from article")     
     for article in db.cursor:
         article_list.append(article)
 
