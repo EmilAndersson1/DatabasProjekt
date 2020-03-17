@@ -7,11 +7,29 @@ from datetime import datetime
 @app.route('/')
 def index():
     article_list = []
-    db.cursor.execute("select headline, preamble, published from article")
+    db.cursor.execute("select headline, preamble, published, article_id from article")
     for article in db.cursor:
         article_list.append(article)
     
     return render_template("index.html", article_list = article_list)
+
+@app.route('/dagblad/<article_id>/')
+def show_dagblad(article_id):
+    article = []
+    sql = "select article_id, headline, preamble, article_text, published from article where article_id = %s"
+    db.cursor.execute(sql,(article_id,))
+
+    [article.append(a) for articles in db.cursor for a in articles ]
+
+    author = []
+    sql2 = "select author.author_name \
+            from author \
+            inner join article_author\
+                on author.person_nr=article_author.person_nr\
+            where article_author.article_id = %s"      
+    db.cursor.execute(sql2,(article_id,))
+    [author.append(a) for authors in db.cursor for a in authors ]
+    return render_template("dagblad.html", article = article, authors = author)
 
 
 @app.route('/new_article/')
