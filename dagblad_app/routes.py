@@ -13,6 +13,20 @@ def index():
     
     return render_template("index.html", article_list = article_list)
 
+@app.route('/add-image/')
+def add_image():
+    
+    return render_template("add-image.html")
+
+@app.route('/add_image_to_db/', methods=['POST'])
+def add_image_to_db():
+    url = request.form["url"]
+    alt_text = request.form["alt_text"]
+
+
+    return redirect(url_for("add_image"))
+
+
 @app.route('/dagblad/<article_id>/')
 def show_dagblad(article_id):
     article = []
