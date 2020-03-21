@@ -15,7 +15,6 @@ def index():
 
 @app.route('/add-image/')
 def add_image():
-    
     return render_template("add-image.html")
 
 @app.route('/add_image_to_db/', methods=['POST'])
@@ -23,8 +22,10 @@ def add_image_to_db():
     url = request.form["url"]
     alt_text = request.form["alt_text"]
 
-
-    return redirect(url_for("add_image"))
+    sql = "insert into images values (%s,%s)"
+    db.cursor.execute(sql, (url,alt_text))
+    db.conn.commit()
+    return redirect(url_for("new_article"))
 
 
 @app.route('/dagblad/<article_id>/')
@@ -52,7 +53,12 @@ def new_article():
     db.cursor.execute("select author_name, person_nr, notes from author")
     for author in db.cursor:
         author_list.append(author)
-    return render_template("new.html", author_list = author_list)
+    
+    image_list = []
+    db.cursor.execute("select * from images")
+    for image in db.cursor:
+        image_list.append(image)
+    return render_template("new.html", author_list = author_list, image_list = image_list)
 
 @app.route('/add_article/', methods=['POST'])
 def add_article():
@@ -64,13 +70,25 @@ def add_article():
     article_text = request.form["article_text"]
     time_published = now.strftime("%Y-%m-%d %H:%M")
 
+    url = request.form.getlist("url")
+    image_text = request.form.getlist("image_text")
+
+    for text in image_text:
+        if text == "":
+            image_text.remove(text)
+
     sql = "INSERT INTO article VALUES (DEFAULT, %s, %s, %s, %s)"
     db.cursor.execute(sql, (headline, preamble, article_text, time_published))
     
     for author in author_personnummer:
         sql = "INSERT INTO article_author(article_id, person_nr) select article_id, %s from article where preamble = %s and headline = %s and published = %s and article_text = %s"
         db.cursor.execute(sql,(author, preamble, headline, time_published, article_text))
-
+    index = 0
+    for url in url:
+        sql = "insert into images_in_article(image_url,article_id,image_text) select %s, article_id, %s from article where preamble = %s and headline = %s and published = %s and article_text = %s"
+        db.cursor.execute(sql,(url, image_text[index], preamble, headline, time_published, article_text))
+        index =+ 1
+    
     db.conn.commit()
 
     return redirect(url_for("admin"))
@@ -78,6 +96,9 @@ def add_article():
 @app.route('/remove_article/', methods=['POST'])
 def remove_article():
     article_being_removed = request.form["article_being_removed"]
+
+    sql = "delete from images_in_article where article_id = %s"
+    db.cursor.execute(sql,(article_being_removed,))
 
     sql = "delete from article_author where article_id = %s"
     db.cursor.execute(sql,(article_being_removed,))

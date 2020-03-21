@@ -19,7 +19,7 @@
                     <!-- skapar lista för val av författare -->
                     {%for author in author_list%}
                     <label class="form-check-label">{{author[0]}}</label>
-                    <input type="checkbox" value="{{author[1]}}" name="author_personnummer" id="name">
+                    <input type="checkbox" value="{{author[1]}}" name="author_personnummer" >
                     <br>
                     {%endfor%}
                     
@@ -32,6 +32,14 @@
             <div class="form-row"> 
                 <a href="{{url_for('add_image')}}" class="btn btn-success btn-lg col-md-8 mb-3">Lägg till fler bilder i databasen!</a>
             </div>
+            
+            {%for image in image_list%}
+                    <label class="form-check-label" >{{image[0]}} </label>
+                    <input type="checkbox" value="{{image[0]}}" name="url">
+                    <input type="text" name="image_text" class="form-control col-md-8" placeholder="Bildtext här!">
+                    <br>
+            {%endfor%}
+        
             <div class="form-row">
                 <div class="col-md-8 mb-3">    
                     <label for="article_preamble">Artikelns inledning här:</label>
