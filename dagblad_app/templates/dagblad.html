@@ -43,8 +43,48 @@
         </div>  
 
         
+        <div class="row">
+            <div class="col-md-8">
+                <hr/>
+                <h5>Kommentarer</h5>             
+            </div>
+        </div>
+
+        <form action="/add_comment/" method="POST">
+            <div class="form-row mt-4">
+                <input type="text" name="article_ID" class="hidden" value="{{article[0]}}">
+                <div class="col-md-4 mb-3">
+                    <label for="name">Namn:</label> 
+                    <input type="text" class="form-control" id="commenter" name="username" placeholder="Ditt namn" required> 
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-8 mb-3">    
+                    <label for="article_text">Kommentar:</label>
+                    <textarea type="text" class="form-control" id="comment_text" rows="6" name="comment" placeholder="Skriv en kommentar" required></textarea>
+                    <input type="submit" class="btn btn-success mt-3" value="Skicka kommentar">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <hr/>
+                    {%for comment in commenter_list_in_article%}
+                        <tr>
+                            <th scope="row">{{commenter[0]}}</th>
+                            <td>{{commenter[1]}}</td>
+                            <td>{{commenter[2]}}</td>
+                        </tr>
+                    {%endfor%}
+
+                </div>
+            </div>
+            
+        
         
     </div>
+
+    
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

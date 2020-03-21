@@ -29,7 +29,12 @@ def show_dagblad(article_id):
             where article_author.article_id = %s"      
     db.cursor.execute(sql2,(article_id,))
     [author.append(a) for authors in db.cursor for a in authors ]
-    return render_template("dagblad.html", article = article, authors = author)
+
+    commenter_list_in_article = []
+    db.cursor.execute("select commenter.username, commenter.comment, commenter.curr_time from (commenter join comment_in_article on commenter.commenter_ID = comment_in_article.commenter_ID) join article on article.article_ID = comment_in_article.article_ID where article.article_ID = comment_in_article.article_ID")     
+    for comment in db.cursor:
+        commenter_list_in_article.append(comment)
+    return render_template("dagblad.html", article = article, authors = author, commenter_list_in_article=commenter_list_in_article)
 
 
 @app.route('/new_article/')
@@ -115,3 +120,19 @@ def remove_author():
     db.conn.commit()
 
     return redirect(url_for("admin"))
+
+@app.route('/add_comment/', methods=['POST'])
+def add_comment():
+    article_ID = request.form["article_ID"]
+    username = request.form["username"]
+    comment = request.form["comment"]
+    now = datetime.now()
+    time_published = now.strftime("%Y-%m-%d %H:%M")
+
+    
+    sql = "INSERT INTO commenter VALUES (DEFAULT, %s, %s, %s)"
+    db.cursor.execute(sql, (username, comment, time_published))
+    db.conn.commit()
+
+
+    return redirect("/dagblad/{}/".format(article_ID))
