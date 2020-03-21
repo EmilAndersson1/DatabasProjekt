@@ -29,15 +29,14 @@ create table commenter(
 );
 
 create table images(
-    image_ID serial,
     image_url varchar(255), 
     alt_text varchar(255), 
-    PRIMARY KEY(image_ID)
+    PRIMARY KEY(image_url)
 );
 
 create table images_in_article(
-    image_ID serial REFERENCES images(image_ID), 
-    article_ID serial REFERENCES article(article_ID), 
+    image_url varchar(255) REFERENCES images(image_url), 
+    article_ID integer REFERENCES article(article_ID), 
     image_text text, 
-    CONSTRAINT images_in_article_ID PRIMARY KEY(image_ID, article_ID)
+    CONSTRAINT images_in_article_ID PRIMARY KEY(image_url, article_ID)
 );
