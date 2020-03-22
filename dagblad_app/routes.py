@@ -30,11 +30,14 @@ def show_dagblad(article_id):
     db.cursor.execute(sql2,(article_id,))
     [author.append(a) for authors in db.cursor for a in authors ]
 
-    commenter_list_in_article = []
-    db.cursor.execute("select commenter.username, commenter.comment, commenter.curr_time from (commenter join comment_in_article on commenter.commenter_ID = comment_in_article.commenter_ID) join article on article.article_ID = comment_in_article.article_ID where article.article_ID = comment_in_article.article_ID")     
+    commenter = []
+    sql3 = "select commenter.username, commenter.comment, commenter.curr_time from commenter join article_author on article_author.article_id = commenter.article_id where article_author.article_id = %s order by commenter.curr_time DESC"    
+    db.cursor.execute(sql3,(article_id,))
     for comment in db.cursor:
-        commenter_list_in_article.append(comment)
-    return render_template("dagblad.html", article = article, authors = author, commenter_list_in_article=commenter_list_in_article)
+        commenter.append(comment)
+        
+    return render_template("dagblad.html", article = article, authors = author, commenter=commenter)
+
 
 
 @app.route('/new_article/')
@@ -130,9 +133,8 @@ def add_comment():
     time_published = now.strftime("%Y-%m-%d %H:%M")
 
     
-    sql = "INSERT INTO commenter VALUES (DEFAULT, %s, %s, %s)"
-    db.cursor.execute(sql, (username, comment, time_published))
+    sql = "INSERT INTO commenter VALUES (DEFAULT, %s, %s, %s, %s)"
+    db.cursor.execute(sql, (article_ID, username, comment, time_published))
     db.conn.commit()
-
 
     return redirect("/dagblad/{}/".format(article_ID))

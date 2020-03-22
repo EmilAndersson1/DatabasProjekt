@@ -21,17 +21,12 @@ create table article_author(
 );
 
 create table commenter(
-    commenter_ID serial, 
+    commenter_ID serial,
+    article_ID integer REFERENCES article(article_ID), 
     username varchar(255), 
     comment text, 
     curr_time varchar(255), 
     PRIMARY KEY (commenter_ID)
-);
-
-create table comment_in_article(
-    commenter_ID integer REFERENCES commenter(commenter_ID),
-    article_ID integer REFERENCES article(article_ID),
-    CONSTRAINT comment_in_article_ID PRIMARY KEY(commenter_ID, article_ID)
 );
 
 create table images(
