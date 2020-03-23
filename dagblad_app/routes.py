@@ -46,7 +46,10 @@ def show_dagblad(article_id):
     [author.append(a) for authors in db.cursor for a in authors ]
 
     commenter = []
-    sql3 = "select commenter.username, commenter.comment, commenter.curr_time from commenter join article_author on article_author.article_id = commenter.article_id where article_author.article_id = %s order by commenter.curr_time DESC"    
+    sql3 = "select commenter.username, commenter.comment, commenter.curr_time \
+            from commenter join article \
+                on article.article_id = commenter.article_id \
+            where article.article_id = %s"    
     db.cursor.execute(sql3,(article_id,))
     for comment in db.cursor:
         commenter.append(comment)
