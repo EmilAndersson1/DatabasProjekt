@@ -29,6 +29,12 @@ create table commenter(
     PRIMARY KEY (commenter_ID)
 );
 
+create table comment_in_article(
+    commenter_ID integer REFERENCES commenter(commenter_ID),
+    article_ID integer REFERENCES article(article_ID),
+    CONSTRAINT comment_in_article_ID PRIMARY KEY(commenter_ID, article_ID)
+);
+
 create table images(
     image_url varchar(255), 
     alt_text varchar(255), 
