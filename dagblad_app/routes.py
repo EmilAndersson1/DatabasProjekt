@@ -44,7 +44,18 @@ def show_dagblad(article_id):
             where article_author.article_id = %s"      
     db.cursor.execute(sql2,(article_id,))
     [author.append(a) for authors in db.cursor for a in authors ]
-    return render_template("dagblad.html", article = article, authors = author)
+
+    image_list = []
+    sql3 = "select images.image_url, images.alt_text, images_in_article.image_text \
+            from images \
+            join images_in_article \
+                on images.image_url = images_in_article.image_url \
+            where images_in_article.article_id = %s"
+
+    db.cursor.execute(sql3,(article_id,))
+    [image_list.append(images) for images in db.cursor]
+    
+    return render_template("dagblad.html", article = article, authors = author, image_list=image_list)
 
 
 @app.route('/new_article/')
