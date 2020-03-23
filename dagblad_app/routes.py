@@ -7,7 +7,7 @@ from datetime import datetime
 @app.route('/')
 def index():
     article_list = []
-    db.cursor.execute("select headline, preamble, published, article_id from article")
+    db.cursor.execute("select headline, preamble, published, article_id from article order by published DESC")
     for article in db.cursor:
         article_list.append(article)
     
@@ -49,7 +49,7 @@ def show_dagblad(article_id):
     sql3 = "select commenter.username, commenter.comment, commenter.curr_time \
             from commenter join article \
                 on article.article_id = commenter.article_id \
-            where article.article_id = %s"    
+            where article.article_id = %s order by commenter.curr_time DESC"    
     db.cursor.execute(sql3,(article_id,))
     for comment in db.cursor:
         commenter.append(comment)
