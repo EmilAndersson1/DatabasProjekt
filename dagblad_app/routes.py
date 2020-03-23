@@ -45,7 +45,6 @@ def show_dagblad(article_id):
     db.cursor.execute(sql2,(article_id,))
     [author.append(a) for authors in db.cursor for a in authors ]
 
-<<<<<<< HEAD
     commenter = []
     sql3 = "select commenter.username, commenter.comment, commenter.curr_time from commenter join article_author on article_author.article_id = commenter.article_id where article_author.article_id = %s order by commenter.curr_time DESC"    
     db.cursor.execute(sql3,(article_id,))
@@ -54,7 +53,6 @@ def show_dagblad(article_id):
         
     return render_template("dagblad.html", article = article, authors = author, commenter=commenter)
 
-=======
     image_list = []
     sql3 = "select images.image_url, images.alt_text, images_in_article.image_text \
             from images \
@@ -66,7 +64,6 @@ def show_dagblad(article_id):
     [image_list.append(images) for images in db.cursor]
     
     return render_template("dagblad.html", article = article, authors = author, image_list=image_list)
->>>>>>> images_in_article
 
 
 @app.route('/new_article/')
