@@ -50,20 +50,18 @@ def show_dagblad(article_id):
     db.cursor.execute(sql3,(article_id,))
     for comment in db.cursor:
         commenter.append(comment)
-        
-    return render_template("dagblad.html", article = article, authors = author, commenter=commenter)
 
     image_list = []
-    sql3 = "select images.image_url, images.alt_text, images_in_article.image_text \
+    sql4 = "select images.image_url, images.alt_text, images_in_article.image_text \
             from images \
             join images_in_article \
                 on images.image_url = images_in_article.image_url \
             where images_in_article.article_id = %s"
 
-    db.cursor.execute(sql3,(article_id,))
+    db.cursor.execute(sql4,(article_id,))
     [image_list.append(images) for images in db.cursor]
     
-    return render_template("dagblad.html", article = article, authors = author, image_list=image_list)
+    return render_template("dagblad.html", article = article, authors = author, image_list=image_list, commenter=commenter)
 
 
 @app.route('/new_article/')
@@ -125,6 +123,9 @@ def remove_article():
     sql = "delete from article where article_id = %s"
     db.cursor.execute(sql,(article_being_removed,))
 
+    sql = "delete from commenter where article_id = %s"
+    db.cursor.execute(sql,(article_being_removed,))
+    
     db.conn.commit()
 
     return redirect(url_for("admin"))
