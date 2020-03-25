@@ -46,7 +46,7 @@ def show_dagblad(article_id):
     [author.append(a) for authors in db.cursor for a in authors ]
 
     commenter = []
-    sql3 = "select commenter.username, commenter.comment, commenter.curr_time \
+    sql3 = "select commenter.username, commenter.comment, commenter.curr_time, commenter.commenter_ID, commenter.article_ID \
             from commenter join article \
                 on article.article_id = commenter.article_id \
             where article.article_id = %s order by commenter.curr_time DESC"    
@@ -185,6 +185,17 @@ def add_comment():
     
     sql = "INSERT INTO commenter VALUES (DEFAULT, %s, %s, %s, %s)"
     db.cursor.execute(sql, (article_ID, username, comment, time_published))
+    db.conn.commit()
+
+    return redirect("/dagblad/{}/".format(article_ID))
+
+@app.route('/remove_comment/', methods=['POST'])
+def remove_comment():
+    comment_being_removed = request.form["comment_being_removed"]
+    article_ID = request.form["comment_being_removed_ID"]
+
+    sql = "delete from commenter where commenter_ID = %s"
+    db.cursor.execute(sql,(comment_being_removed,))
     db.conn.commit()
 
     return redirect("/dagblad/{}/".format(article_ID))

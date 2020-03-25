@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-2">Mortförs Dagblad</h1>
+        <h1 class="mt-2"><a href="/">Mortförs Dagblad</a></h1>
         <div class="row mt-4">
             <div class="col-md-8">
                 <h2>{{article[1]}}</h2>
@@ -66,32 +66,34 @@
                     <input type="text" class="form-control" id="commenter" name="username" placeholder="Ditt namn" required> 
                 </div>
             </div>
-            <div class="form-row">
+            <div class="form-row mb-4">
                 <div class="col-md-8 mb-3">    
                     <label for="article_text">Kommentar:</label>
                     <textarea type="text" class="form-control" id="comment_text" rows="6" name="comment" placeholder="Skriv en kommentar" required></textarea>
                     <input type="submit" class="btn btn-success mt-3" value="Skicka kommentar">
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-8">
-                    <table class="table table-hover mt-4">
-                        <tbody>
-                            {%for comment in commenter%}
-                            <tr>
-                                <th scope="row">{{comment[0]}}</th>
-                            </tr>
-                            <tr>
-                                <td>{{comment[1]}}</td>
-                                <td>{{comment[2]}}</td>
-                            </tr>
-                            {%endfor%}
-                        </tbody>
-                    </table>
-
+            </form>
+            {%for comment in commenter%}
+            <div class="row col-md-5 mb-4">
+                <div class="card">
+                    <div class="card-header">{{comment[0]}}</div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p>{{comment[1]}}</p>
+                            <form action="/remove_comment/" method="POST">
+                                <input type="text" name="comment_being_removed" class="hidden" value="{{comment[3]}}">
+                                <input type="text" name="comment_being_removed_ID" class="hidden" value="{{comment[4]}}">
+                                <input type="submit" class="btn btn-sm btn-danger float-right" value="Ta bort kommentar">
+                            </form>
+                            <footer class="blockquote-footer">{{comment[2]}}
+                                
+                            </footer>
+                        </blockquote>
+                    </div>
                 </div>
-            </div>    
+            </div>
+            {%endfor%}
     </div>
 
     
