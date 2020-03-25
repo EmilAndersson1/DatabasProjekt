@@ -117,6 +117,9 @@ def add_article():
 def remove_article():
     article_being_removed = request.form["article_being_removed"]
 
+    sql = "delete from commenter where article_id = %s"
+    db.cursor.execute(sql,(article_being_removed,))
+
     sql = "delete from images_in_article where article_id = %s"
     db.cursor.execute(sql,(article_being_removed,))
 
@@ -126,8 +129,7 @@ def remove_article():
     sql = "delete from article where article_id = %s"
     db.cursor.execute(sql,(article_being_removed,))
 
-    sql = "delete from commenter where article_id = %s"
-    db.cursor.execute(sql,(article_being_removed,))
+    
     
     db.conn.commit()
 
